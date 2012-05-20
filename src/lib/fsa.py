@@ -117,8 +117,6 @@ class Automaton:
         if state is None:
             state = self.current_state
 
-        print "Current goal: " + state.rank
-
         for key, output_val in state.outputs.iteritems():
             # Skip any "bitX" region encodings
             if re.match('^bit\d+$', key): continue
@@ -483,6 +481,7 @@ class Automaton:
 
             if self.transition_contains_motion:
                 print "Crossed border from %s to %s!" % (self.regions[self.current_region].name, self.regions[self.next_region].name)
+		self.transition_contains_motion = False
 
             if not self.proj.compile_options['fastslow']:
                 # Run actuators after motion
