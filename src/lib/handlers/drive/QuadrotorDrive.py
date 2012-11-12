@@ -11,9 +11,6 @@ from numpy import array, sqrt, vdot
 import time
 
 class driveHandler:
-
-#    distScale = .03     # Weight for calculated displacement 
-#    timeInt = .25       # Time alloted per change in position
     
     distScale = .02     # Weight for calculated displacement 
     timeInt = .3       # Time alloted per change in position
@@ -44,24 +41,22 @@ class driveHandler:
         This method will take the velocity only for its direction. It will
         then tell the robot to step by the desired interval in that
         direction
-        """    
-        
+        """        
         oldPose = self.newPose
         oldDir = self.newDir
         self.newPose = self.getPosition()
         self.newDir = self.normalise(array([x, y]))
                 
         if (self.getMagnitude(self.newDir) == 0 or 
-                    not(self.loco.state == "FLYING") or
+                    self.loco.state != "FLYING" or
                     (time.clock() - self.timeElap) < self.timeInt):
             time.sleep(.01)
             return
-                
+        
         disp = self.normalise(self.newPose - oldPose)
         desPos = ((oldDir - disp + self.newDir) * self.distScale + 
                     self.newPose)
-        self.loco.setRefPos(desPos[0], desPos[1], self.loco.flyHeight,
-                                self.loco.MAINTAIN)
+        self.loco.setRefPos(desPos[0], desPos[1], self.loco.flyHeight, 0)
         self.timeElap = time.clock()
    
         """

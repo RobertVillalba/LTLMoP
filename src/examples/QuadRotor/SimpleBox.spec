@@ -7,15 +7,15 @@
 Actions: # List of action propositions and their state (enabled = 1, disabled = 0)
 flyLow, 0
 flyHigh, 0
-turn0, 1
-turnPi, 1
+turn0, 0
+turnPi, 0
 
 CompileOptions:
 convexify: True
 fastslow: False
 
 CurrentConfigName:
-QuadWithZ
+QuadRevamped
 
 Customs: # List of custom propositions
 
@@ -25,8 +25,8 @@ SimpleBox.regions
 Sensors: # List of sensor propositions and their state (enabled = 1, disabled = 0)
 highButton, 0
 lowButton, 0
-PiButton, 1
-zeroButton, 1
+PiButton, 0
+zeroButton, 0
 
 
 ======== SPECIFICATION ========
@@ -44,7 +44,6 @@ others =
 6 = p4
 
 Spec: # Specification in structured English
-visit 3
-do turn0 if and only if you are sensing zeroButton
-do turnPi if and only if you are sensing PiButton
+visit 5
+visit 1
 
