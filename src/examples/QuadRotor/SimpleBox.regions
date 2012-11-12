@@ -1,0 +1,388 @@
+# This is a region definition file for the LTLMoP toolkit.
+# Format details are described at the beginning of each section below.
+# Note that all values are separated by *tabs*.
+
+Background: # Relative path of background image file
+None
+
+CalibrationPoints: # Vertices to use for map calibration: (vertex_region_name, vertex_index)
+boundary	3
+boundary	6
+boundary	13
+
+Obstacles: # Names of regions to treat as obstacles
+
+Regions: # Stored as JSON string
+[
+    {
+        "name": "r1", 
+        "color": [
+            255, 
+            0, 
+            0
+        ], 
+        "position": [
+            465, 
+            80
+        ], 
+        "type": "rect", 
+        "size": [
+            182, 
+            152
+        ]
+    }, 
+    {
+        "name": "4", 
+        "color": [
+            176, 
+            0, 
+            255
+        ], 
+        "holeList": [], 
+        "points": [
+            [
+                0, 
+                0
+            ], 
+            [
+                204, 
+                0
+            ], 
+            [
+                206, 
+                0
+            ], 
+            [
+                206, 
+                154
+            ], 
+            [
+                0, 
+                154
+            ]
+        ], 
+        "position": [
+            259, 
+            395
+        ], 
+        "type": "poly", 
+        "size": [
+            206, 
+            154
+        ]
+    }, 
+    {
+        "name": "bottomLeft", 
+        "color": [
+            255, 
+            0, 
+            0
+        ], 
+        "holeList": [], 
+        "points": [
+            [
+                0, 
+                0
+            ], 
+            [
+                168, 
+                0
+            ], 
+            [
+                168, 
+                154
+            ], 
+            [
+                167, 
+                154
+            ], 
+            [
+                0, 
+                154
+            ]
+        ], 
+        "position": [
+            91, 
+            395
+        ], 
+        "type": "poly", 
+        "size": [
+            168, 
+            154
+        ]
+    }, 
+    {
+        "name": "2", 
+        "color": [
+            0, 
+            255, 
+            64
+        ], 
+        "holeList": [], 
+        "points": [
+            [
+                0, 
+                0
+            ], 
+            [
+                206, 
+                0
+            ], 
+            [
+                206, 
+                152
+            ], 
+            [
+                204, 
+                152
+            ], 
+            [
+                0, 
+                152
+            ]
+        ], 
+        "position": [
+            259, 
+            80
+        ], 
+        "type": "poly", 
+        "size": [
+            206, 
+            152
+        ]
+    }, 
+    {
+        "name": "6", 
+        "color": [
+            64, 
+            0, 
+            128
+        ], 
+        "position": [
+            465, 
+            232
+        ], 
+        "type": "rect", 
+        "size": [
+            182, 
+            163
+        ]
+    }, 
+    {
+        "name": "boundary", 
+        "color": [
+            255, 
+            0, 
+            0
+        ], 
+        "holeList": [], 
+        "points": [
+            [
+                0, 
+                315
+            ], 
+            [
+                0, 
+                313
+            ], 
+            [
+                0, 
+                152
+            ], 
+            [
+                0, 
+                0
+            ], 
+            [
+                168, 
+                0
+            ], 
+            [
+                374, 
+                0
+            ], 
+            [
+                556, 
+                0
+            ], 
+            [
+                556, 
+                152
+            ], 
+            [
+                556, 
+                315
+            ], 
+            [
+                556, 
+                469
+            ], 
+            [
+                374, 
+                469
+            ], 
+            [
+                168, 
+                469
+            ], 
+            [
+                167, 
+                469
+            ], 
+            [
+                0, 
+                469
+            ]
+        ], 
+        "position": [
+            91, 
+            80
+        ], 
+        "type": "poly", 
+        "size": [
+            556, 
+            469
+        ]
+    }, 
+    {
+        "name": "7", 
+        "color": [
+            0, 
+            0, 
+            255
+        ], 
+        "holeList": [], 
+        "points": [
+            [
+                0, 
+                161
+            ], 
+            [
+                0, 
+                0
+            ], 
+            [
+                168, 
+                0
+            ], 
+            [
+                168, 
+                163
+            ], 
+            [
+                0, 
+                163
+            ]
+        ], 
+        "position": [
+            91, 
+            232
+        ], 
+        "type": "poly", 
+        "size": [
+            168, 
+            163
+        ]
+    }, 
+    {
+        "name": "5", 
+        "color": [
+            255, 
+            255, 
+            0
+        ], 
+        "position": [
+            465, 
+            395
+        ], 
+        "type": "rect", 
+        "size": [
+            182, 
+            154
+        ]
+    }, 
+    {
+        "name": "3", 
+        "color": [
+            204, 
+            50, 
+            50
+        ], 
+        "holeList": [], 
+        "points": [
+            [
+                0, 
+                0
+            ], 
+            [
+                204, 
+                0
+            ], 
+            [
+                206, 
+                0
+            ], 
+            [
+                206, 
+                163
+            ], 
+            [
+                204, 
+                163
+            ], 
+            [
+                0, 
+                163
+            ]
+        ], 
+        "position": [
+            259, 
+            232
+        ], 
+        "type": "poly", 
+        "size": [
+            206, 
+            163
+        ]
+    }, 
+    {
+        "name": "1", 
+        "color": [
+            176, 
+            0, 
+            255
+        ], 
+        "position": [
+            91, 
+            80
+        ], 
+        "type": "rect", 
+        "size": [
+            168, 
+            152
+        ]
+    }
+]
+
+Transitions: # Region 1 Name, Region 2 Name, Bidirectional transition faces (face1_x1, face1_y1, face1_x2, face1_y2, face2_x1, ...)
+r1	2	465	80	465	232
+r1	6	465	232	647	232
+r1	boundary	647	80	647	232	465	80	647	80
+4	bottomLeft	259	395	259	549
+4	boundary	259	549	465	549
+4	5	465	395	465	549
+4	3	463	395	465	395	259	395	463	395
+bottomLeft	boundary	91	549	258	549	91	395	91	549	258	549	259	549
+bottomLeft	7	91	395	259	395
+2	boundary	259	80	465	80
+2	3	259	232	463	232	463	232	465	232
+2	1	259	80	259	232
+6	boundary	647	232	647	395
+6	5	465	395	647	395
+6	3	465	232	465	395
+boundary	7	91	393	91	395	91	232	91	393
+boundary	5	647	395	647	549	465	549	647	549
+boundary	1	91	80	259	80	91	80	91	232
+7	3	259	232	259	395
+7	1	91	232	259	232
+
