@@ -74,7 +74,7 @@ class DipolarController:
         """ Calculate the robots new position based on the previous position,
         controls, and time elapsed.
         
-        :param poseDes: numpy 3D array. The previous pose
+        :param posePrev: numpy 3D array. The previous pose
         :param u: linear velocity
         :param w: angular velocity
         :param delT: time elapsed

@@ -11,10 +11,11 @@ using feedback linearization.
 from math import sin, cos
 
 class driveHandler:
-    def __init__(self, proj, shared_data,d=0.6):
+    def __init__(self, proj, shared_data,velScale,d=0.6):
         """
         Initialization method of differential drive handler.
 
+        velScale (float): Will scale the incoming velocities by this much. (default=.29)
         d (float): Distance from front axle to point we are abstracting to [m] (default=0.6,max=0.8,min=0.2)
         """   
 
@@ -25,18 +26,15 @@ class driveHandler:
             print "(DRIVE) Locomotion Command Handler not found."
             exit(-1)
 
+        self.velScale = velScale
         self.d = d
+        
     def setVelocity(self, x, y, theta=0):
         #print "VEL:%f,%f" % tuple(self.coordmap([x, y]))
 
         # Feedback linearization code:
-        #d = 0.125 # Distance from front axle to point we are abstracting to [m]
-        #d = 0.6 # Distance from front axle to point we are abstracting to [m]
-        #vx = 0.09*X[0,0]
-        #vy = 0.09*X[1,0]
-        # ^^ Changed the scaling because it was getting stuck - too high of a velocity ? - Hadas 20/12/07
-        vx = 0.29*x
-        vy = 0.29*y
+        vx = self.velScale*x
+        vy = self.velScale*y
         w = (1/self.d)*(-sin(theta)*vx + cos(theta)*vy)
         v = cos(theta)*vx + sin(theta)*vy
 

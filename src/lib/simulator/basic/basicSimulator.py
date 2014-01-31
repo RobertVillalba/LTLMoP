@@ -4,25 +4,28 @@
 basicSimulator.py -- A simple robot simulator provides pose by integrating given locomotion cmd
 ================================================================
 """
-from numpy import array,sqrt,dot, cos, sin, abs, pi, sign
-from math import atan2,log10,ceil
+
+import numpy as np
+from threading import Lock, _start_new_thread
 import time, sys
-import thread
 
 class basicSimulator:
-    def __init__(self, init_pose):
+    def __init__(self, init_pose, type):
         """
-        Initialization handler for pioneer ode simulated robot.
+        Initialization handler for a holonomic or differential drive robot.
 
-        init_pose is a 1-by-3 vector [x,y,orintation]
+        :param init_pose: a 1-by-3 vector [x,y,orintation]
+        :param type: 0 - holonomic, 1 - differential drive        
         """
+        # SETTINGS
+        self.updateInterval = .1    # The max time to wait between intervals
+        self.inertia = 1 # scale from 0 to 1, the bigger the scale the smaller the "inertia" is
 
         print "(Basic Simulator) Initializing Basic Simulator..."
-        self.pose = array(init_pose) # current pose
-        self.curVel = array([0.0,0.0]) # current velocity
-        self.time = 0.0 # used to calculate time elapsed
-        self.inertia = 1 # scale from 0 to 1, the bigger the scale the smaller the "inertia" is
-        self.setVel_called = False
+        self.type = type    # Holonomic or differential drive
+        self.pose = np.array(init_pose) # current pose
+        self.curVel = np.array([0.0,0.0]) # current velocity
+        self.updateTime = None  # The time of the last update
 
         # Choose a timer func with maximum accuracy for given platform
         if sys.platform in ['win32', 'cygwin']:
@@ -31,52 +34,79 @@ class basicSimulator:
             self.timer_func = time.time
 
         print "(Basic Simulator) Start Basic Simulator..."
-        thread.start_new_thread(self.runSimulation, () )
+        self.simMutex = Lock()
+        self.updateTime = self.timer_func()
+        _start_new_thread(self.runSimulation, () )
+
+    def getPose(self):
+        """ Returns the current pose of the robot """
+        return self.pose
 
     def setVel(self,cmd):
         """
-        Set the velocity of the robot, update the pose by simply inegrate the velocity
+        Set the velocity of the robot, update the pose by integrating the velocity
 
-        cmd is a 1-by-2 vector represents the velocity
+        :param cmd: can be a numpy array with [xVelocity, yVelocity] or 
+                    [linearVelocity, angularVelocity] depending on robot type.
         """
-
-        # the orintation is kept the same (rad)
-        # TODO: allows more robot models
-        # update the velocity, assume the velocity takes times to change (to avoid local minimum)
-        self.curVel = self.inertia*array(cmd)+(1-self.inertia)*self.curVel
-        self.setVel_called = True
+        self.updatePose()
+        
+        # assume the velocity takes times to change (avoids local minimum)
+        self.curVel = self.inertia*np.array(cmd)+(1-self.inertia)*self.curVel
 
     def runSimulation(self):
-        if self.time == 0.0:
-            self.time = self.timer_func()
-        while 1:
-            if self.setVel_called:
-                time_span = (self.timer_func()-self.time)
-                time_span = time_span*10**ceil(log10(0.03/time_span))
-                vel = array(self.curVel)*time_span
-                #self.pose[0:2] = self.pose[0:2]+vel
-                
-                delAng = vel[1]
-                dist = vel[0]
-                if abs(delAng) < .0000001:
-                    self.pose[0] += dist*cos(self.pose[2])   
-                    self.pose[1] += dist*sin(self.pose[2])
-                else:            
-                    rad = dist/delAng;
-                    vecL = sqrt( (rad*sin(delAng))**2 + (rad - rad*cos(delAng))**2) * sign(dist)
-                    
-                    self.pose[0] += vecL*cos(delAng/2 + self.pose[2])
-                    self.pose[1] += vecL*sin(delAng/2 + self.pose[2])
-                    self.pose[2] = (self.pose[2] + delAng)%(2*pi)
-                
-                self.setVel_called=False
+        """ Updates the simulator at the desired time interval """
+        while True:
+            self.updatePose()
+            time.sleep(self.updateInterval)
+            
+    def updatePose(self):
+        """ Updates pose depending on robot type """
+        with self.simMutex:
+            timeSpan = self.timer_func() - self.updateTime
+            
+            # Holonomic
+            if self.type == 0:
+                self.pose[:2] += self.curVel[:2] * timeSpan
+            
+            # Differential drive
+            elif self.type == 1:
+                self.pose[:3] = self.integrateForwardsDifferential(self.pose[:3], 
+                                self.curVel[0], self.curVel[1], timeSpan)
+            
+            # Error
             else:
-                self.pose[0:2] = self.pose[0:2]+array([0.0,0.0])*(self.timer_func()-self.time)
-            self.time = self.timer_func()
-            time.sleep(0.1)
+                print "Error: BasicSim - Incorrect robot type."
+            
+            self.updateTime = self.timer_func()
+            
+    def integrateForwardsDifferential(self, posePrev, u, w, delT):
+        """ Calculate the robots new pose based on the previous position,
+        controls, and time elapsed. Assumes differential drive.
+        
+        :param posePrev: numpy 3D array. The previous pose
+        :param u: linear velocity
+        :param w: angular velocity
+        :param delT: time elapsed
+        :return: poseN: the new pose of the robot
+        """
+        poseN = np.array(posePrev)
+        
+        delAng = w*delT
+        dist = u*delT
+        
+        if np.abs(delAng) < .0000001:
+            poseN[0] += dist*np.cos(posePrev[2])   
+            poseN[1] += dist*np.sin(posePrev[2])
+        else:
+            # Radius of circle and length of displacement vector
+            rad = dist/delAng;
+            vecL = np.sqrt( (rad*np.sin(delAng))**2 + (rad - rad*np.cos(delAng))**2) * np.sign(dist)
+            
+            poseN[0] += vecL*np.cos(delAng/2 + poseN[2])
+            poseN[1] += vecL*np.sin(delAng/2 + poseN[2])
+            poseN[2] = (poseN[2] + delAng)%(2*np.pi)
+            
+        return poseN
 
-    def getPose(self):
-        """
-        Returns the current pose of the robot
-        """
-        return self.pose
+

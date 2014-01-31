@@ -7,11 +7,12 @@ basicSimInit.py -- Basic Simulated Robot Initialization Handler
 import simulator.basic.basicSimulator as basicSimulator
 
 class initHandler:
-    def __init__(self, proj, init_region):
+    def __init__(self, proj, init_region, type):
         """
         Initialization handler for basic simulated robot.
 
         init_region (region): The name of the region where the simulated robot starts
+        type (int): 0 - Holonomic, 1 - Differential (default=1)
         """
         
         rfi_original = proj.loadRegionFile(decomposed=False)
@@ -21,7 +22,7 @@ class initHandler:
         center = init_region_obj.getCenter()
 
         #initialize the simulator
-        self.simulator =  basicSimulator.basicSimulator([center[0],center[1],0.0])
+        self.simulator =  basicSimulator.basicSimulator([center[0],center[1],0.0], type)
 
     def getSharedData(self):
         # Return a dictionary of any objects that will need to be shared with
