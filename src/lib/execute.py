@@ -303,8 +303,9 @@ class LTLMoPExecutor(object, ExecutorResynthesisExtensions):
             # if show_gui and (timer_func() - last_gui_update_time > 0.05)
             avg_freq = 0.9 * avg_freq + 0.1 * 1 / (toc - tic) # IIR filter
             self.postEvent("FREQ", int(math.ceil(avg_freq)))
-            pose = self.proj.h_instance['pose'].getPose(cached=True)[0:2]
-            self.postEvent("POSE", tuple(map(int, self.proj.coordmap_lab2map(pose))))
+            pose = self.proj.h_instance['pose'].getPose(cached=True)
+            self.postEvent("POSE", tuple(map(int, self.proj.coordmap_lab2map(pose[0:2]))))
+            self.postEvent("VEL", (10*math.cos(pose[2]), 10*math.sin(pose[2])))
 
             last_gui_update_time = self.timer_func()
 

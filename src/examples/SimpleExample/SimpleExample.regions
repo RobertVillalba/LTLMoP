@@ -1,0 +1,101 @@
+# This is a region definition file for the LTLMoP toolkit.
+# Format details are described at the beginning of each section below.
+# Note that all values are separated by *tabs*.
+
+Background: # Relative path of background image file
+None
+
+CalibrationPoints: # Vertices to use for map calibration: (vertex_region_name, vertex_index)
+
+Obstacles: # Names of regions to treat as obstacles
+
+Regions: # Stored as JSON string
+[
+    {
+        "name": "boundary", 
+        "color": [
+            255, 
+            0, 
+            255
+        ], 
+        "holeList": [], 
+        "height": 0, 
+        "points": [
+            [
+                247.0, 
+                100.0
+            ], 
+            [
+                124.0, 
+                100.0
+            ], 
+            [
+                0.0, 
+                100.0
+            ], 
+            [
+                0.0, 
+                0.0
+            ], 
+            [
+                124.0, 
+                0.0
+            ], 
+            [
+                247.0, 
+                0.0
+            ]
+        ], 
+        "position": [
+            189.0, 
+            131.0
+        ], 
+        "type": "poly", 
+        "size": [
+            247.0, 
+            100.0
+        ]
+    }, 
+    {
+        "name": "r2", 
+        "color": [
+            255, 
+            0, 
+            0
+        ], 
+        "height": 0.0, 
+        "position": [
+            313.0, 
+            131.0
+        ], 
+        "type": "rect", 
+        "size": [
+            123.0, 
+            100.0
+        ]
+    }, 
+    {
+        "name": "r1", 
+        "color": [
+            255, 
+            0, 
+            255
+        ], 
+        "height": 0, 
+        "position": [
+            189.0, 
+            131.0
+        ], 
+        "type": "rect", 
+        "size": [
+            124.0, 
+            100.0
+        ]
+    }
+]
+
+Transitions: # Region 1 Name, Region 2 Name, Bidirectional transition faces (face1_x1, face1_y1, face1_x2, face1_y2, face2_x1, ...)
+boundary	r2	436.0	231.0	313.0	231.0	313.0	131.0	436.0	131.0	436.0	231.0	436.0	131.0
+boundary	r1	313.0	131.0	189.0	131.0	189.0	231.0	189.0	131.0	189.0	231.0	313.0	231.0
+r2	r1	313.0	131.0	313.0	231.0
+
