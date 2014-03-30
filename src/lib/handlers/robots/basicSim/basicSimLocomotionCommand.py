@@ -5,6 +5,8 @@
 basicSimLocomotionCommand.py - Basic Simulation Locomotion Command Handler
 ================================================================================
 """
+from random import gauss
+
 class locomotionCommandHandler:
     def __init__(self, proj, shared_data,speed):
         """
@@ -20,6 +22,13 @@ class locomotionCommandHandler:
             sys.exit(-1)
         
     def sendCommand(self, cmd):
+        addNoise = False
+        
+        if addNoise:
+            cmd[0] += cmd[0] * gauss(0, .1)
+            cmd[1] += cmd[1] * gauss(0, .3)
+#             cmd[0] += gauss(0, .1)
+#             cmd[1] += gauss(0, .3)
 
         v = self.speed*cmd[0]
         w = self.speed*cmd[1]
